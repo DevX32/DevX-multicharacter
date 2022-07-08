@@ -1,2 +1,2 @@
 # DevX-multicharacter
-progression -----------90%
+progression ----------- 90%
