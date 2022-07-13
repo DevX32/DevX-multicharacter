@@ -8,7 +8,8 @@
 
 Just Replace your qb-multicharacter to DevX-multicharacter
 And Also Most Important Dont Rename The Multicharacter
-
+# If u have any prob and suggestion 
+Dme On DevX#6202
 
 
  
