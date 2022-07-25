@@ -137,7 +137,8 @@ RegisterNUICallback('cDataPed', function(data)
             else
                 CreateThread(function()
                     local randommodels = {
-                        "ig_claypain",
+                     "mp_m_freemode_01",
+                     "mp_f_freemode_01",
                     }
                     local model = GetHashKey(randommodels[math.random(1, #randommodels)])
                     RequestModel(model)
@@ -161,7 +162,8 @@ RegisterNUICallback('cDataPed', function(data)
     else
         Citizen.CreateThread(function()
             local randommodels = {
-                "ig_claypain",
+              "mp_m_freemode_01",
+              "mp_f_freemode_01",
             }
             local model = GetHashKey(randommodels[math.random(1, #randommodels)])
             RequestModel(model)
