@@ -2,7 +2,7 @@ local cam = nil
 local charPed = nil
 local QBCore = exports['qb-core']:GetCoreObject()
 
--- Main Thread
+-- Main
 
 CreateThread(function()
 	while true do
