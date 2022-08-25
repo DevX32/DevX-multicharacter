@@ -108,18 +108,18 @@ RegisterNUICallback('selectCharacter', function(data)
     DeleteEntity(charPed)
 end)
 
-RegisterNUICallback('cDataPed', function(data)
-    local cData = data.cData  
+RegisterNUICallback('cDataPed', function(nData, cb)
+    local cData = nData.cData
     SetEntityAsMissionEntity(charPed, true, true)
     DeleteEntity(charPed)
     if cData ~= nil then
-        QBCore.Functions.TriggerCallback('DevX-multicharacter:server:getSkin', function(skinData)
+        QBCore.Functions.TriggerCallback('qb-multicharacter:server:getSkin', function(skinData)
             if skinData then
-                local model = skinData.model
+                local model = joaat(skinData.model)
                 CreateThread(function()
-                    RequestModel(GetHashKey(model))
-                    while not HasModelLoaded(GetHashKey(model)) do
-                        Wait(10)
+                    RequestModel(model)
+                    while not HasModelLoaded(model) do
+                        Wait(0)
                     end
                     charPed = CreatePed(2, model, Config.PedCoords.x, Config.PedCoords.y, Config.PedCoords.z - 0.98, Config.PedCoords.w, false, true)
                     SetPedComponentVariation(charPed, 0, 0, 0, 2)
@@ -128,22 +128,17 @@ RegisterNUICallback('cDataPed', function(data)
                     PlaceObjectOnGroundProperly(charPed)
                     SetBlockingOfNonTemporaryEvents(charPed, true)
                     exports['fivem-appearance']:setPedAppearance(charPed, skinData)
-                    RequestAnimDict("timetable@reunited@ig_10")
-                        while not HasAnimDictLoaded("timetable@reunited@ig_10") do
-                            Wait(1)
-                        end		
-                    TaskPlayAnim(charPed,"timetable@reunited@ig_10","base_amanda",1.0,-1.0, -1, 1, 1, true, true, true)
                 end)
             else
                 CreateThread(function()
                     local randommodels = {
-                     "mp_m_freemode_01",
-                     "mp_f_freemode_01",
+                        "mp_m_freemode_01",
+                        "mp_f_freemode_01",
                     }
-                    local model = GetHashKey(randommodels[math.random(1, #randommodels)])
+                    model = joaat(randommodels[math.random(1, #randommodels)])
                     RequestModel(model)
                     while not HasModelLoaded(model) do
-                        Wait(10)
+                        Wait(0)
                     end
                     charPed = CreatePed(2, model, Config.PedCoords.x, Config.PedCoords.y, Config.PedCoords.z - 0.98, Config.PedCoords.w, false, true)
                     SetPedComponentVariation(charPed, 0, 0, 0, 2)
@@ -151,24 +146,20 @@ RegisterNUICallback('cDataPed', function(data)
                     SetEntityInvincible(charPed, true)
                     PlaceObjectOnGroundProperly(charPed)
                     SetBlockingOfNonTemporaryEvents(charPed, true)
-                    RequestAnimDict("timetable@reunited@ig_10")
-                        while not HasAnimDictLoaded("timetable@reunited@ig_10") do
-                            Wait(1)
-                        end		
-                    TaskPlayAnim(charPed,"timetable@reunited@ig_10","base_amanda",1.0,-1.0, -1, 1, 1, true, true, true)
                 end)
             end
+            cb("ok")
         end, cData.citizenid)
     else
-        Citizen.CreateThread(function()
+        CreateThread(function()
             local randommodels = {
-              "mp_m_freemode_01",
-              "mp_f_freemode_01",
+                "mp_m_freemode_01",
+                "mp_f_freemode_01",
             }
-            local model = GetHashKey(randommodels[math.random(1, #randommodels)])
+            local model = joaat(randommodels[math.random(1, #randommodels)])
             RequestModel(model)
             while not HasModelLoaded(model) do
-                Citizen.Wait(0)
+                Wait(0)
             end
             charPed = CreatePed(2, model, Config.PedCoords.x, Config.PedCoords.y, Config.PedCoords.z - 0.98, Config.PedCoords.w, false, true)
             SetPedComponentVariation(charPed, 0, 0, 0, 2)
@@ -176,12 +167,8 @@ RegisterNUICallback('cDataPed', function(data)
             SetEntityInvincible(charPed, true)
             PlaceObjectOnGroundProperly(charPed)
             SetBlockingOfNonTemporaryEvents(charPed, true)
-            RequestAnimDict("timetable@reunited@ig_10")
-            while not HasAnimDictLoaded("timetable@reunited@ig_10") do
-                Wait(1)
-            end		
-            TaskPlayAnim(charPed,"timetable@reunited@ig_10","base_amanda",1.0,-1.0, -1, 1, 1, true, true, true)                       
         end)
+        cb("ok")
     end
 end)
 
