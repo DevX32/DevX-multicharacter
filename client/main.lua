@@ -113,7 +113,7 @@ RegisterNUICallback('cDataPed', function(nData, cb)
     SetEntityAsMissionEntity(charPed, true, true)
     DeleteEntity(charPed)
     if cData ~= nil then
-        QBCore.Functions.TriggerCallback('qb-multicharacter:server:getSkin', function(skinData)
+        QBCore.Functions.TriggerCallback('DevX-multicharacter:server:getSkin', function(skinData)
             if skinData then
                 local model = joaat(skinData.model)
                 CreateThread(function()
