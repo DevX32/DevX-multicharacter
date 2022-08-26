@@ -128,6 +128,11 @@ RegisterNUICallback('cDataPed', function(nData, cb)
                     PlaceObjectOnGroundProperly(charPed)
                     SetBlockingOfNonTemporaryEvents(charPed, true)
                     exports['fivem-appearance']:setPedAppearance(charPed, skinData)
+                RequestAnimDict("timetable@reunited@ig_10")
+                        while not HasAnimDictLoaded("timetable@reunited@ig_10") do
+                            Wait(1)
+                        end		
+                    TaskPlayAnim(charPed,"timetable@reunited@ig_10","base_amanda",1.0,-1.0, -1, 1
                 end)
             else
                 CreateThread(function()
