@@ -132,7 +132,7 @@ RegisterNUICallback('cDataPed', function(nData, cb)
                         while not HasAnimDictLoaded("timetable@reunited@ig_10") do
                             Wait(1)
                         end		
-                    TaskPlayAnim(charPed,"timetable@reunited@ig_10","base_amanda",1.0,-1.0, -1, 1
+                    TaskPlayAnim(charPed,"timetable@reunited@ig_10","base_amanda",1.0,-1.0, -1, 1, 1, true, true, true)
                 end)
             else
                 CreateThread(function()
