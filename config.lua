@@ -30,7 +30,7 @@ Config.EnableDeleteButton = true -- Define if the player can delete the characte
 --configs--
 Config.ClothingEvent = 'qb-clothing:client:loadPlayerClothing'
 
-Config.UseFivemAppearance = true 
+Config.UseFivemAppearance = false
 
 Config.FivemAppearanceversion = 'il' -------- if u are using AJ one do aj or if u are using illenium do il
 
