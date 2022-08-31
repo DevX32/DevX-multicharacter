@@ -7,11 +7,10 @@ shared_scripts {
     'config.lua',
     '@qb-apartments/config.lua',
 }
-
 client_script {
             'client/main.lua'
             'client/skin.lua'
-            }
+}
 server_scripts  {
     '@oxmysql/lib/MySQL.lua',
     'server/main.lua'
