@@ -36,7 +36,7 @@ local function skyCam(bool)
 end
 
 local function openCharMenu(bool)
-    QBCore.Functions.TriggerCallback("qb-multicharacter:server:GetNumberOfCharacters", function(result)
+    QBCore.Functions.TriggerCallback("DevX-multicharacter:server:GetNumberOfCharacters", function(result)
         SetNuiFocus(bool, bool)
         SendNUIMessage({
             action = "ui",
@@ -74,7 +74,7 @@ RegisterNetEvent('DevX-multicharacter:client:closeNUI', function()
     SetNuiFocus(false, false)
 end)
 
-RegisterNetEvent('qb-multicharacter:client:chooseChar', function()
+RegisterNetEvent('DevX-multicharacter:client:chooseChar', function()
     SetNuiFocus(false, false)
     DoScreenFadeOut(10)
     Wait(1000)
@@ -101,14 +101,14 @@ end)
 RegisterNUICallback('disconnectButton', function(_, cb)
     SetEntityAsMissionEntity(charPed, true, true)
     DeleteEntity(charPed)
-    TriggerServerEvent('qb-multicharacter:server:disconnect')
+    TriggerServerEvent('DevX-multicharacter:server:disconnect')
     cb("ok")
 end)
 
 RegisterNUICallback('selectCharacter', function(data, cb)
     local cData = data.cData
     DoScreenFadeOut(10)
-    TriggerServerEvent('qb-multicharacter:server:loadUserData', cData)
+    TriggerServerEvent('DevX-multicharacter:server:loadUserData', cData)
     openCharMenu(false)
     SetEntityAsMissionEntity(charPed, true, true)
     DeleteEntity(charPed)
@@ -120,7 +120,7 @@ RegisterNUICallback('cDataPed', function(nData, cb)
     SetEntityAsMissionEntity(charPed, true, true)
     DeleteEntity(charPed)
     if cData ~= nil then
-        QBCore.Functions.TriggerCallback('qb-multicharacter:server:getSkin', function(model, data)
+        QBCore.Functions.TriggerCallback('DevX-multicharacter:server:getSkin', function(model, data)
             model = model ~= nil and tonumber(model) or false
             if model ~= nil then
                 CreateThread(function()
@@ -181,7 +181,7 @@ RegisterNUICallback('cDataPed', function(nData, cb)
 end)
 
 RegisterNUICallback('setupCharacters', function(_, cb)
-    QBCore.Functions.TriggerCallback("qb-multicharacter:server:setupCharacters", function(result)
+    QBCore.Functions.TriggerCallback("DevX-multicharacter:server:setupCharacters", function(result)
         SendNUIMessage({
             action = "setupCharacters",
             characters = result
@@ -203,14 +203,14 @@ RegisterNUICallback('createNewCharacter', function(data, cb)
     elseif cData.gender == "Female" then
         cData.gender = 1
     end
-    TriggerServerEvent('qb-multicharacter:server:createCharacter', cData)
+    TriggerServerEvent('DevX-multicharacter:server:createCharacter', cData)
     Wait(500)
     cb("ok")
 end)
 
 RegisterNUICallback('removeCharacter', function(data, cb)
-    TriggerServerEvent('qb-multicharacter:server:deleteCharacter', data.citizenid)
+    TriggerServerEvent('DevX-multicharacter:server:deleteCharacter', data.citizenid)
     DeletePed(charPed)
-    TriggerEvent('qb-multicharacter:client:chooseChar')
+    TriggerEvent('DevX-multicharacter:client:chooseChar')
     cb("ok")
 end)
