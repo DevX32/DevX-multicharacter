@@ -1,10 +1,8 @@
-QBCore = exports[Config.CoreFolderName]:GetCoreObject()---------Dont change this
-
------------Make changes to this function if you know what your doing
+QBCore = exports[Config.CoreFolderName]:GetCoreObject()
 
 function createPeds(bool)
     if bool then
-        QBCore.Functions.TriggerCallback('yg-characters:server:GetPlayerSkins',function(result)
+        QBCore.Functions.TriggerCallback('DevX-multicharacter:server:GetPlayerSkins',function(result)
             if result ~= nil then
                 if Config.UseFivemAppearance then
                     if Config.FivemAppaeranceversion == 'aj' then
