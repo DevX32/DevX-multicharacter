@@ -5,15 +5,15 @@ description 'DevX-Multicharacter'
 
 shared_scripts {
     'config.lua',
-    '@qb-apartments/config.lua',
+    '@qb-apartments/config.lua'
 }
 client_script {
-            'client/main.lua'
+            'client/main.lua',
             'client/skin.lua'
 }
 server_scripts  {
     '@oxmysql/lib/MySQL.lua',
-    'server/main.lua'
+    'server/main.lua',
     'server/skin.lua'
 }
 
