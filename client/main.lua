@@ -15,7 +15,24 @@ CreateThread(function()
 end)
 
 -- Functions
-
+local function pednpc(model)
+        CreateThread(function()
+            local randommodels = Config.PlayerModels
+            local model = GetHashKey(randommodels[math.random(1, #randommodels)])
+            RequestModel(model)
+            while not HasModelLoaded(model) do
+                Wait(0)
+            end
+            charnpc = CreatePed(2, model, Config.PedCoords.x, Config.PedCoords.y, Config.PedCoords.z - 0.98, Config.PedCoords.w, false, true)
+			TaskStartScenarioAtPosition(charnpc, 'PROP_HUMAN_SEAT_BENCH', Config.PedCoords.x, Config.PedCoords.y, Config.PedCoords.z - 0.98, Config.PedCoords.w, 0, false, true)
+			SetEntityAlpha(charnpc, 400)
+            SetPedComponentVariation(charnpc, 0, 0, 0, 2)
+            FreezeEntityPosition(charnpc, false)
+            SetEntityInvincible(charnpc, true)
+            PlaceObjectOnGroundProperly(charnpc)
+            SetBlockingOfNonTemporaryEvents(charnpc, true)
+        end)
+end
 local function skyCam(bool)
     TriggerEvent('qb-weathersync:client:DisableSync')
     if bool then
