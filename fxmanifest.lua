@@ -3,7 +3,11 @@ game 'gta5'
 
 description 'DevX-Multicharacter'
 
-shared_script 'config.lua'
+shared_scripts {
+    'config.lua',
+    '@qb-apartments/config.lua',
+}
+
 client_script {
             'client/main.lua'
             'client/skin.lua'
