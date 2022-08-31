@@ -2,13 +2,13 @@ local cam = nil
 local charPed = nil
 local QBCore = exports['qb-core']:GetCoreObject()
 
--- Main
+-- Main Thread
 
 CreateThread(function()
 	while true do
 		Wait(0)
 		if NetworkIsSessionStarted() then
-			TriggerEvent('DevX-multicharacter:client:chooseChar')
+			TriggerEvent('qb-multicharacter:client:chooseChar')
 			return
 		end
 	end
@@ -36,17 +36,21 @@ local function skyCam(bool)
 end
 
 local function openCharMenu(bool)
-    SetNuiFocus(bool, bool)
-    SendNUIMessage({
-        action = "ui",
-        toggle = bool,
-    })
-    skyCam(bool)
+    QBCore.Functions.TriggerCallback("qb-multicharacter:server:GetNumberOfCharacters", function(result)
+        SetNuiFocus(bool, bool)
+        SendNUIMessage({
+            action = "ui",
+            toggle = bool,
+            nChar = result,
+            enableDeleteButton = Config.EnableDeleteButton,
+        })
+        skyCam(bool)
+    end)
 end
 
 -- Events
 
-RegisterNetEvent('DevX-multicharacter:client:closeNUIdefault', function() -- This event is only for no starting apartments
+RegisterNetEvent('qb-multicharacter:client:closeNUIdefault', function() -- This event is only for no starting apartments
     DeleteEntity(charPed)
     SetNuiFocus(false, false)
     DoScreenFadeOut(500)
@@ -65,16 +69,16 @@ RegisterNetEvent('DevX-multicharacter:client:closeNUIdefault', function() -- Thi
     TriggerEvent('qb-clothes:client:CreateFirstCharacter')
 end)
 
-RegisterNetEvent('DevX-multicharacter:client:closeNUI', function()
+RegisterNetEvent('qb-multicharacter:client:closeNUI', function()
     DeleteEntity(charPed)
     SetNuiFocus(false, false)
 end)
 
-RegisterNetEvent('DevX-multicharacter:client:chooseChar', function()
+RegisterNetEvent('qb-multicharacter:client:chooseChar', function()
     SetNuiFocus(false, false)
     DoScreenFadeOut(10)
     Wait(1000)
-    local interior = GetInteriorAtCoords(Config.Interior.x, Config.Interior.y, Config.Interior.z)
+    local interior = GetInteriorAtCoords(Config.Interior.x, Config.Interior.y, Config.Interior.z - 18.9)
     LoadInterior(interior)
     while not IsInteriorReady(interior) do
         Wait(1000)
@@ -89,37 +93,40 @@ end)
 
 -- NUI Callbacks
 
-RegisterNUICallback('closeUI', function()
+RegisterNUICallback('closeUI', function(_, cb)
     openCharMenu(false)
+    cb("ok")
 end)
 
-RegisterNUICallback('disconnectButton', function()
+RegisterNUICallback('disconnectButton', function(_, cb)
     SetEntityAsMissionEntity(charPed, true, true)
     DeleteEntity(charPed)
-    TriggerServerEvent('DevX-multicharacter:server:disconnect')
+    TriggerServerEvent('qb-multicharacter:server:disconnect')
+    cb("ok")
 end)
 
-RegisterNUICallback('selectCharacter', function(data)
+RegisterNUICallback('selectCharacter', function(data, cb)
     local cData = data.cData
     DoScreenFadeOut(10)
-    TriggerServerEvent('DevX-multicharacter:server:loadUserData', cData)
+    TriggerServerEvent('qb-multicharacter:server:loadUserData', cData)
     openCharMenu(false)
     SetEntityAsMissionEntity(charPed, true, true)
     DeleteEntity(charPed)
+    cb("ok")
 end)
 
-RegisterNUICallback('cDataPed', function(data)
-    local cData = data.cData  
+RegisterNUICallback('cDataPed', function(nData, cb)
+    local cData = nData.cData
     SetEntityAsMissionEntity(charPed, true, true)
     DeleteEntity(charPed)
     if cData ~= nil then
-        QBCore.Functions.TriggerCallback('DevX-multicharacter:server:getSkin', function(skinData)
-            if skinData then
-                local model = skinData.model
+        QBCore.Functions.TriggerCallback('qb-multicharacter:server:getSkin', function(model, data)
+            model = model ~= nil and tonumber(model) or false
+            if model ~= nil then
                 CreateThread(function()
-                    RequestModel(GetHashKey(model))
-                    while not HasModelLoaded(GetHashKey(model)) do
-                        Wait(10)
+                    RequestModel(model)
+                    while not HasModelLoaded(model) do
+                        Wait(0)
                     end
                     charPed = CreatePed(2, model, Config.PedCoords.x, Config.PedCoords.y, Config.PedCoords.z - 0.98, Config.PedCoords.w, false, true)
                     SetPedComponentVariation(charPed, 0, 0, 0, 2)
@@ -127,23 +134,19 @@ RegisterNUICallback('cDataPed', function(data)
                     SetEntityInvincible(charPed, true)
                     PlaceObjectOnGroundProperly(charPed)
                     SetBlockingOfNonTemporaryEvents(charPed, true)
+                    data = json.decode(data)
                     TriggerEvent('qb-clothing:client:loadPlayerClothing', data, charPed)
-                    RequestAnimDict("timetable@reunited@ig_10")
-                        while not HasAnimDictLoaded("timetable@reunited@ig_10") do
-                            Wait(1)
-                        end		
-                    TaskPlayAnim(charPed,"timetable@reunited@ig_10","base_amanda",1.0,-1.0, -1, 1, 1, true, true, true)
                 end)
             else
                 CreateThread(function()
                     local randommodels = {
-                     "mp_m_freemode_01",
-                     "mp_f_freemode_01",
+                        "mp_m_freemode_01",
+                        "mp_f_freemode_01",
                     }
-                    local model = GetHashKey(randommodels[math.random(1, #randommodels)])
+                    model = joaat(randommodels[math.random(1, #randommodels)])
                     RequestModel(model)
                     while not HasModelLoaded(model) do
-                        Wait(10)
+                        Wait(0)
                     end
                     charPed = CreatePed(2, model, Config.PedCoords.x, Config.PedCoords.y, Config.PedCoords.z - 0.98, Config.PedCoords.w, false, true)
                     SetPedComponentVariation(charPed, 0, 0, 0, 2)
@@ -151,24 +154,20 @@ RegisterNUICallback('cDataPed', function(data)
                     SetEntityInvincible(charPed, true)
                     PlaceObjectOnGroundProperly(charPed)
                     SetBlockingOfNonTemporaryEvents(charPed, true)
-                    RequestAnimDict("timetable@reunited@ig_10")
-                        while not HasAnimDictLoaded("timetable@reunited@ig_10") do
-                            Wait(1)
-                        end		
-                    TaskPlayAnim(charPed,"timetable@reunited@ig_10","base_amanda",1.0,-1.0, -1, 1, 1, true, true, true)
                 end)
             end
+            cb("ok")
         end, cData.citizenid)
     else
-        Citizen.CreateThread(function()
+        CreateThread(function()
             local randommodels = {
-              "mp_m_freemode_01",
-              "mp_f_freemode_01",
+                "mp_m_freemode_01",
+                "mp_f_freemode_01",
             }
-            local model = GetHashKey(randommodels[math.random(1, #randommodels)])
+            local model = joaat(randommodels[math.random(1, #randommodels)])
             RequestModel(model)
             while not HasModelLoaded(model) do
-                Citizen.Wait(0)
+                Wait(0)
             end
             charPed = CreatePed(2, model, Config.PedCoords.x, Config.PedCoords.y, Config.PedCoords.z - 0.98, Config.PedCoords.w, false, true)
             SetPedComponentVariation(charPed, 0, 0, 0, 2)
@@ -176,29 +175,27 @@ RegisterNUICallback('cDataPed', function(data)
             SetEntityInvincible(charPed, true)
             PlaceObjectOnGroundProperly(charPed)
             SetBlockingOfNonTemporaryEvents(charPed, true)
-            RequestAnimDict("timetable@reunited@ig_10")
-            while not HasAnimDictLoaded("timetable@reunited@ig_10") do
-                Wait(1)
-            end		
-            TaskPlayAnim(charPed,"timetable@reunited@ig_10","base_amanda",1.0,-1.0, -1, 1, 1, true, true, true)                       
         end)
+        cb("ok")
     end
 end)
 
-RegisterNUICallback('setupCharacters', function()
-    QBCore.Functions.TriggerCallback("DevX-multicharacter:server:setupCharacters", function(result)
+RegisterNUICallback('setupCharacters', function(_, cb)
+    QBCore.Functions.TriggerCallback("qb-multicharacter:server:setupCharacters", function(result)
         SendNUIMessage({
             action = "setupCharacters",
             characters = result
         })
+        cb("ok")
     end)
 end)
 
-RegisterNUICallback('removeBlur', function()
+RegisterNUICallback('removeBlur', function(_, cb)
     SetTimecycleModifier('default')
+    cb("ok")
 end)
 
-RegisterNUICallback('createNewCharacter', function(data)
+RegisterNUICallback('createNewCharacter', function(data, cb)
     local cData = data
     DoScreenFadeOut(150)
     if cData.gender == "Male" then
@@ -206,11 +203,14 @@ RegisterNUICallback('createNewCharacter', function(data)
     elseif cData.gender == "Female" then
         cData.gender = 1
     end
-    TriggerServerEvent('DevX-multicharacter:server:createCharacter', cData)
+    TriggerServerEvent('qb-multicharacter:server:createCharacter', cData)
     Wait(500)
+    cb("ok")
 end)
 
-RegisterNUICallback('removeCharacter', function(data)
-    TriggerServerEvent('DevX-multicharacter:server:deleteCharacter', data.citizenid)
-    TriggerEvent('DevX-multicharacter:client:chooseChar')
+RegisterNUICallback('removeCharacter', function(data, cb)
+    TriggerServerEvent('qb-multicharacter:server:deleteCharacter', data.citizenid)
+    DeletePed(charPed)
+    TriggerEvent('qb-multicharacter:client:chooseChar')
+    cb("ok")
 end)
