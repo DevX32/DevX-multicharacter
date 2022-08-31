@@ -32,7 +32,7 @@ Config.ClothingEvent = 'qb-clothing:client:loadPlayerClothing'
 
 Config.UseFivemAppearance = true 
 
-Config.FivemAppaeranceversion = 'il' -------- if u are using AJ one do aj or if u are using illenium do il
+Config.FivemAppearanceversion = 'il' -------- if u are using AJ one do aj or if u are using illenium do il
 
 Config.FivemAppearanceName = 'fivem-appearance'
 
