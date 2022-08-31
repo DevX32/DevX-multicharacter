@@ -1,9 +1,7 @@
-QBCore = exports[Config.CoreFolderName]:GetCoreObject() ----------Dont change this
-
----------Make necessary changes but maintain the table-------
+QBCore = exports[Config.CoreFolderName]:GetCoreObject()
 
 if not Config.UseFivemAppearance then
-    QBCore.Functions.CreateCallback("yg-characters:server:GetPlayerSkins", function(source, cb)
+    QBCore.Functions.CreateCallback("DevX-multicharacter:server:GetPlayerSkins", function(source, cb)
         local src = source
         local license = QBCore.Functions.GetIdentifier(src, 'license')
         local skinsTable = {}
@@ -32,7 +30,7 @@ if not Config.UseFivemAppearance then
     end)
 else
     if Config.FivemAppaeranceversion == 'aj' then
-        QBCore.Functions.CreateCallback("yg-characters:server:GetPlayerSkins", function(source, cb)
+        QBCore.Functions.CreateCallback("DevX-multicharacter:server:GetPlayerSkins", function(source, cb)
             local src = source
             local license = QBCore.Functions.GetIdentifier(src, 'license')
             local skinsTable = {}
@@ -94,7 +92,7 @@ else
             end
         end)
     
-        QBCore.Functions.CreateCallback('yg-characters:server:SkinCheck',function(source,cb,cid)
+        QBCore.Functions.CreateCallback('DevX-multicharacter:server:SkinCheck',function(source,cb,cid)
             local src = source
             local license = QBCore.Functions.GetIdentifier(src, 'license')
             if Config.oxmysql == 'new' then
@@ -117,7 +115,7 @@ else
             end
         end)
     elseif Config.FivemAppaeranceversion == 'il' then
-        QBCore.Functions.CreateCallback("yg-characters:server:GetPlayerSkins", function(source, cb)
+        QBCore.Functions.CreateCallback("DevX-multicharacter:server:GetPlayerSkins", function(source, cb)
             local src = source
             local license = QBCore.Functions.GetIdentifier(src, 'license')
             local skinsTable = {}
