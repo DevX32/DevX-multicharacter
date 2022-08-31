@@ -29,6 +29,7 @@ Config.CamCoords = vector4(-781.43, 334.48, 211.32, 1.03) -- Camera coordinates 
 Config.EnableDeleteButton = true -- Define if the player can delete the character or not
 --configs--
 Config.ClothingEvent = 'qb-clothing:client:loadPlayerClothing'
+
 Config.UseFivemAppearance = true 
 
 Config.FivemAppaeranceversion = 'il' -------- if u are using AJ one do aj or if u are using illenium do il
