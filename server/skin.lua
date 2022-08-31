@@ -114,7 +114,7 @@ else
                 end
             end
         end)
-    elseif Config.FivemAppaeranceversion == 'il' then
+    elseif Config.FivemAppearanceversion == 'il' then
         QBCore.Functions.CreateCallback("DevX-multicharacter:server:GetPlayerSkins", function(source, cb)
             local src = source
             local license = QBCore.Functions.GetIdentifier(src, 'license')
