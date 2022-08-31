@@ -26,7 +26,7 @@ function createPeds(bool)
                                 SetEntityAlpha(charPed, 150, false)
                             end
                         end
-                    elseif Config.FivemAppaeranceversion == 'il' then
+                    elseif Config.FivemAppearanceversion == 'il' then
                         for k, v in pairs(result) do
                             model = v.model
                             RequestModel(model)
