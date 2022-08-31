@@ -3,7 +3,6 @@ local charPed = nil
 local QBCore = exports['qb-core']:GetCoreObject()
 
 -- Main Thread
-
 CreateThread(function()
 	while true do
 		Wait(0)
@@ -15,7 +14,6 @@ CreateThread(function()
 end)
 
 -- Functions
-
 local function skyCam(bool)
     TriggerEvent('qb-weathersync:client:DisableSync')
     if bool then
@@ -49,7 +47,6 @@ local function openCharMenu(bool)
 end
 
 -- Events
-
 RegisterNetEvent('DevX-multicharacter:client:closeNUIdefault', function() -- This event is only for no starting apartments
     DeleteEntity(charPed)
     SetNuiFocus(false, false)
