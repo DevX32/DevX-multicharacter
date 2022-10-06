@@ -1,4 +1,4 @@
-local QBCore = exports['PteroDev']:GetCoreObject()
+local QBCore = exports['qb-core']:GetCoreObject()
 
 -- Functions
 
