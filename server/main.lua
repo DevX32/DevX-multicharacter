@@ -1,4 +1,4 @@
-local QBCore = exports['qb-core']:GetCoreObject()
+local QBCore = exports['PteroDev']:GetCoreObject()
 
 -- Functions
 
@@ -96,14 +96,14 @@ RegisterNetEvent('DevX-multicharacter:server:createCharacter', function(data)
         if Config.StartingApartment then
             local randbucket = (GetPlayerPed(src) .. math.random(1,999))
             SetPlayerRoutingBucket(src, randbucket)
-            print('^2[DevXFW]^7 '..GetPlayerName(src)..' has succesfully loaded!')
+            print('^2[PteroDev]^7 '..GetPlayerName(src)..' has succesfully loaded!')
             QBCore.Commands.Refresh(src)
             loadHouseData()
             TriggerClientEvent("DevX-multicharacter:client:closeNUI", src)
             TriggerClientEvent('apartments:client:setupSpawnUI', src, newData)
             GiveStarterItems(src)
         else
-            print('^2[DevXFW]^7 '..GetPlayerName(src)..' has succesfully loaded!')
+            print('^2[PteroDev]^7 '..GetPlayerName(src)..' has succesfully loaded!')
             QBCore.Commands.Refresh(src)
             loadHouseData()
             TriggerClientEvent("DevX-multicharacter:client:closeNUIdefault", src)
@@ -148,12 +148,10 @@ QBCore.Functions.CreateCallback("DevX-multicharacter:server:setupCharacters", fu
     end)
 end)
 
-QBCore.Functions.CreateCallback("DevX-multicharacter:server:getSkin", function(source, cb, cid)
-    local result = MySQL.query.await('SELECT * FROM players WHERE citizenid = ?', {cid})
-    local PlayerData = result[1]
-    PlayerData.model = json.decode(PlayerData.skin)
-    if PlayerData.skin ~= nil then
-        cb(PlayerData.skin, PlayerData.model.model)
+QBCore.Functions.CreateCallback("DevX-multicharacter:server:getSkin", function(_, cb, cid)
+    local result = MySQL.query.await('SELECT * FROM playerskins WHERE citizenid = ? AND active = ?', {cid, 1})
+    if result[1] ~= nil then
+        cb(json.decode(result[1].skin))
     else
         cb(nil)
     end
