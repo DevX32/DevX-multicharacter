@@ -1,6 +1,6 @@
 local cam = nil
 local charPed = nil
-local QBCore = exports['PteroDev']:GetCoreObject()
+local QBCore = exports['qb-core']:GetCoreObject()
 
 -- Main
 
