@@ -1,8 +1,8 @@
 fx_version 'cerulean'
 game 'gta5'
+lua54 'yes'
 
 description 'DevX-Multicharacter'
-
 shared_script 'config.lua'
 client_script 'client/main.lua'
 server_scripts  {
@@ -19,5 +19,3 @@ files {
     'html/profanity.js',
     'html/script.js'
 }
-
-lua54 'yes'
