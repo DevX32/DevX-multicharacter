@@ -113,9 +113,9 @@ RegisterNUICallback('cDataPed', function(nData, cb)
     SetEntityAsMissionEntity(charPed, true, true)
     DeleteEntity(charPed)
     if cData ~= nil then
-        QBCore.Functions.TriggerCallback('qb-multicharacter:server:getSkin', function(skinData)
-            if skinData then
-                local model = joaat(skinData.model)
+        QBCore.Functions.TriggerCallback('qb-multicharacter:server:getSkin', function(model, data)
+            model = model ~= nil and tonumber(model) or false
+            if model ~= nil then
                 CreateThread(function()
                     RequestModel(model)
                     while not HasModelLoaded(model) do
@@ -127,12 +127,8 @@ RegisterNUICallback('cDataPed', function(nData, cb)
                     SetEntityInvincible(charPed, true)
                     PlaceObjectOnGroundProperly(charPed)
                     SetBlockingOfNonTemporaryEvents(charPed, true)
+                    data = json.decode(data)
                     TriggerEvent('qb-clothing:client:loadPlayerClothing', data, charPed)
-                    RequestAnimDict("timetable@reunited@ig_10")
-                        while not HasAnimDictLoaded("timetable@reunited@ig_10") do
-                            Wait(1)
-                        end		
-                    TaskPlayAnim(charPed,"timetable@reunited@ig_10","base_amanda",1.0,-1.0, -1, 1, 1, true, true, true)
                 end)
             else
                 CreateThread(function()
@@ -151,11 +147,6 @@ RegisterNUICallback('cDataPed', function(nData, cb)
                     SetEntityInvincible(charPed, true)
                     PlaceObjectOnGroundProperly(charPed)
                     SetBlockingOfNonTemporaryEvents(charPed, true)
-                    RequestAnimDict("timetable@reunited@ig_10")
-                        while not HasAnimDictLoaded("timetable@reunited@ig_10") do
-                            Wait(1)
-                        end		
-                    TaskPlayAnim(charPed,"timetable@reunited@ig_10","base_amanda",1.0,-1.0, -1, 1, 1, true, true, true)
                 end)
             end
             cb("ok")
