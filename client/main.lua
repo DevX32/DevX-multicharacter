@@ -10,7 +10,7 @@ CreateThread(function()
 		if NetworkIsSessionStarted() then
 	        TriggerEvent('DevX-multicharacter:client:chooseChar')
 	        return
-	     end
+	  end
        end
 end)
 
