@@ -435,7 +435,7 @@ input[type="date"]::-webkit-clear-button {
     font-size: 2vh;
 }
 
-.loading-rondje {
+.loading-st {
     position: absolute;
     margin: 0 auto;
     left: 0;
@@ -448,7 +448,7 @@ input[type="date"]::-webkit-clear-button {
     padding: 1vh;
 }
 
-.loading-rondje > p {
+.loading-st > p {
     color: white;
     margin-top: 1vh;
     font-family: 'Bebas Neue';
