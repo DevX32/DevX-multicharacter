@@ -58,22 +58,34 @@ end
 
 -- Commands
 
-QBCore.Commands.Add("logout", "Logout of Character (Admin Only)", {}, false, function(source)
-    local src = source
-    QBCore.Player.Logout(src)
-    TriggerClientEvent('DevX-multicharacter:client:chooseChar', src)
-end, "admin")
-
-QBCore.Commands.Add("closeNUI", "Close Multi NUI", {}, false, function(source)
-    local src = source
-    TriggerClientEvent('DevX-multicharacter:client:closeNUI', src)
+lib.addCommand('logout', {
+    help = 'Logs you out of your current character',
+    restricted = 'admin',
+}, function(source)
+    QBCore.Player.Logout(source)
+    TriggerClientEvent('DevX-multicharacter:client:chooseChar', source)
 end)
 
+lib.addCommand('deletechar', {
+    help = 'Delete a players character',
+    restricted = 'admin',
+    params = {
+        { name = 'id', help = 'Player ID', type = 'number' },
+    }
+}, function(source, args)
+    local Player = QBCore.Functions.GetPlayer(args.id)
+
+    if not Player then return end
+    local CID = Player.PlayerData.citizenid
+
+    QBCore.Player.ForceDeleteCharacter(CID)
+    TriggerClientEvent("QBCore:Notify", source, Lang:t("notifications.deleted_other_char", {citizenid = tostring(CID)}))
+end)
 -- Events
 
 RegisterNetEvent('DevX-multicharacter:server:disconnect', function()
     local src = source
-    DropPlayer(src, "You have disconnected from QBCore")
+    DropPlayer(src, "You have disconnected from Server")
 end)
 
 RegisterNetEvent('DevX-multicharacter:server:loadUserData', function(cData)
@@ -146,7 +158,7 @@ QBCore.Functions.CreateCallback("DevX-multicharacter:server:setupCharacters", fu
     end)
 end)
 
-QBCore.Functions.CreateCallback("DevX-multicharacter:server:getSkin", function(_, cb, cid)
+QBCore.Functions.CreateCallback("DevX-multicharacter:callback:getSkin", function(_, cb, cid)
     local result = MySQL.query.await('SELECT * FROM playerskins WHERE citizenid = ? AND active = ?', {cid, 1})
     if result[1] ~= nil then
         cb(json.decode(result[1].skin))
