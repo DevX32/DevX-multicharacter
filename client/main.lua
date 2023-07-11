@@ -8,10 +8,10 @@ CreateThread(function()
 	while true do
 		Wait(0)
 		if NetworkIsSessionStarted() then
-			TriggerEvent('DevX-multicharacter:client:chooseChar')
-			return
-		end
-	end
+	        TriggerEvent('DevX-multicharacter:client:chooseChar')
+	        return
+	     end
+       end
 end)
 
 -- Functions
@@ -128,7 +128,7 @@ RegisterNUICallback('cDataPed', function(nData, cb)
                     PlaceObjectOnGroundProperly(charPed)
                     SetBlockingOfNonTemporaryEvents(charPed, true)
                     data = json.decode(data)
-                    TriggerEvent('qb-clothing:client:loadPlayerClothing', data, charPed)
+                    exports['illenium-appearance']:setPedAppearance(charPed, skinData)
                 end)
             else
                 CreateThread(function()
