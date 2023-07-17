@@ -4,7 +4,9 @@ author 'DevX32'
 description 'DevX-Multicharacter'
 shared_scripts {
     '@ox_lib/init.lua',
-    'shared.lua'
+    'shared.lua',
+    'en.lua',
+    '@qb-core/shared/locale.lua'
 }
 client_script {
     'client/cl_multi.lua'
