@@ -58,28 +58,15 @@ end
 
 -- Commands
 
-lib.addCommand('logout', {
-    help = 'Logs you out of your current character',
-    restricted = 'admin',
-}, function(source)
-    QBCore.Player.Logout(source)
-    TriggerClientEvent('DevX-multicharacter:client:chooseChar', source)
-end)
+QBCore.Commands.Add("logout", Lang:t("commands.logout_description"), {}, false, function(source)
+    local src = source
+    QBCore.Player.Logout(src)
+    TriggerClientEvent('qb-multicharacter:client:chooseChar', src)
+end, "admin")
 
-lib.addCommand('deletechar', {
-    help = 'Delete a players character',
-    restricted = 'admin',
-    params = {
-        { name = 'id', help = 'Player ID', type = 'number' },
-    }
-}, function(source, args)
-    local Player = QBCore.Functions.GetPlayer(args.id)
-
-    if not Player then return end
-    local CID = Player.PlayerData.citizenid
-
-    QBCore.Player.ForceDeleteCharacter(CID)
-    TriggerClientEvent("QBCore:Notify", source, Lang:t("notifications.deleted_other_char", {citizenid = tostring(CID)}))
+QBCore.Commands.Add("closeNUI", Lang:t("commands.closeNUI_description"), {}, false, function(source)
+    local src = source
+    TriggerClientEvent('qb-multicharacter:client:closeNUI', src)
 end)
 -- Events
 
