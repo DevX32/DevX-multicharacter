@@ -68,6 +68,7 @@ QBCore.Commands.Add("closeNUI", "Close Multi NUI", {}, false, function(source)
     local src = source
     TriggerClientEvent('DevX-multicharacter:client:closeNUI', src)
 end)
+
 -- Events
 
 RegisterNetEvent('DevX-multicharacter:server:disconnect', function()
