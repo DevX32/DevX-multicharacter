@@ -127,7 +127,6 @@ RegisterNUICallback('cDataPed', function(nData, cb)
                     SetEntityInvincible(charPed, true)
                     PlaceObjectOnGroundProperly(charPed)
                     SetBlockingOfNonTemporaryEvents(charPed, true)
-                    data = json.decode(data)
                     exports['illenium-appearance']:setPedAppearance(charPed, skinData)
                 end)
             else
