@@ -3,7 +3,6 @@ local charPed = nil
 local QBCore = exports['qb-core']:GetCoreObject()
 
 -- Main
-
 CreateThread(function()
 	while true do
 		Wait(0)
@@ -15,7 +14,6 @@ CreateThread(function()
 end)
 
 -- Functions
-
 local function skyCam(bool)
     TriggerEvent('qb-weathersync:client:DisableSync')
     if bool then
@@ -113,7 +111,7 @@ RegisterNUICallback('cDataPed', function(nData, cb)
     SetEntityAsMissionEntity(charPed, true, true)
     DeleteEntity(charPed)
     if cData ~= nil then
-        QBCore.Functions.TriggerCallback('DevX-multicharacter:server:getSkin', function(model, data)
+        lib.callback('DevX-multicharacter:server:getSkin', function(model, data)
             model = model ~= nil and tonumber(model) or false
             if model ~= nil then
                 CreateThread(function()
@@ -173,7 +171,7 @@ RegisterNUICallback('cDataPed', function(nData, cb)
 end)
 
 RegisterNUICallback('setupCharacters', function()
-    QBCore.Functions.TriggerCallback("DevX-multicharacter:server:setupCharacters", function(result)
+    lib.callback("DevX-multicharacter:server:setupCharacters", function(result)
         SendNUIMessage({
             action = "setupCharacters",
             characters = result
