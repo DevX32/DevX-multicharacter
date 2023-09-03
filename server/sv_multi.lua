@@ -117,22 +117,22 @@ end)
 
 -- Callbacks
 
-QBCore.Functions.CreateCallback("DevX-multicharacter:server:GetUserCharacters", function(source, cb)
+lib.callback.register("DevX-multicharacter:server:GetUserCharacters", function(source)
     local src = source
     local license = QBCore.Functions.GetIdentifier(src, 'license')
 
     MySQL.Async.execute('SELECT * FROM players WHERE license = ?', {license}, function(result)
-        cb(result)
+        return result
     end)
 end)
 
-QBCore.Functions.CreateCallback("DevX-multicharacter:server:GetServerLogs", function(source, cb)
+lib.callback.register("DevX-multicharacter:server:GetServerLogs", function(source)
     MySQL.Async.execute('SELECT * FROM server_logs', {}, function(result)
-        cb(result)
+        return result
     end)
 end)
 
-QBCore.Functions.CreateCallback("DevX-multicharacter:server:setupCharacters", function(source, cb)
+lib.callback.register("DevX-multicharacter:server:setupCharacters", function(source)
     local license = QBCore.Functions.GetIdentifier(source, 'license')
     local plyChars = {}
     MySQL.Async.fetchAll('SELECT * FROM players WHERE license = ?', {license}, function(result)
@@ -142,15 +142,15 @@ QBCore.Functions.CreateCallback("DevX-multicharacter:server:setupCharacters", fu
             result[i].job = json.decode(result[i].job)
             plyChars[#plyChars+1] = result[i]
         end
-        cb(plyChars)
+        return plyChars
     end)
 end)
 
-QBCore.Functions.CreateCallback("qb-multicharacter:server:getSkin", function(_, cb, cid)
+lib.callback.register("DevX-multicharacter:server:getSkin", function(_, cid)
     local result = MySQL.query.await('SELECT * FROM playerskins WHERE citizenid = ? AND active = ?', {cid, 1})
     if result[1] ~= nil then
-        cb(json.decode(result[1].skin))
+        return json.decode(result[1].skin)
     else
-        cb(nil)
+        return nil
     end
 end)
